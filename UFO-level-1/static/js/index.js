@@ -5,7 +5,7 @@
 var tbody = d3.select("tbody");
 var button = d3.select("#filter-btn");
 var inputField = d3.select(".form-control");
-
+var inputDate = inputField.property("value").trim();
 // Console.log the UFO sighting data from data.js
 // console.log(data);
 
@@ -14,10 +14,10 @@ var inputField = d3.select(".form-control");
 
 // *Load data into the page before any interaction with user (initialize)
 function init() {
-// Use d3 to append 1 cell per UFO report value (datetime, city, state, country, shape, duration, comments)
+  // Use d3 to append 1 cell per UFO report value (datetime, city, state, country, shape, duration, comments)
   data.forEach(function (UFOSighting) {
     var row = tbody.append("tr");
-  
+
     Object.entries(UFOSighting).forEach(function ([key, value]) {
       var cell = row.append("td");
       cell.text(value)
@@ -32,17 +32,30 @@ init();
 
 // This function is triggered when the button is clicked
 function filterTable() {
+  d3.event.preventDefault
   console.log("Filter Table was clicked!");
+  tbody.html("")
+  var inputField = d3.select(".form-control");
+  var inputDate = inputField.property("value").trim();
 
   // We can use d3 to see the object that dispatched the event
   console.log(d3.event.target);
   // Log the input (date) that caused the change
-  console.log(this.value);
+  console.log(inputDate);
+  sameDate = data.filter(object => object.datetime === inputDate);
+  sameDate.forEach(function (UFOSighting) {
+    var row = tbody.append("tr");
+
+    Object.entries(UFOSighting).forEach(function ([key, value]) {
+      var cell = row.append("td");
+      cell.text(value)
+    });
+  });
 }
 
 // We can use the `on` function in d3 to attach an event to the handler function
 button.on("click", filterTable);
-inputField.on("change", filterTable);
+// inputField.on("change", filterTable);
 
 // Search through the date/time column to find rows that match user input.
-sameDate = data.filter(object => object.datetime === this.value);
+// sameDate = data.filter(object => object.datetime === this.value);
